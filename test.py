@@ -10,7 +10,7 @@ from torchvision.transforms.functional import to_tensor, to_pil_image
 from model import Generator
 
 
-torch.backends.cudnn.enabled = False
+torch.backends.cudnn.enabled = True
 torch.backends.cudnn.benchmark = False
 torch.backends.cudnn.deterministic = True
 
@@ -51,6 +51,7 @@ def test(args):
 
         out.save(os.path.join(args.output_dir, image_name))
         print(f"image saved: {image_name}")
+        torch.cuda.empty_cache()
 
 
 if __name__ == '__main__':

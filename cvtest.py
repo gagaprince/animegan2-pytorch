@@ -7,6 +7,8 @@ data = cv.imread('./samples/results/8.jpg')
 
 # print(data)
 
+
+
 cv.namedWindow('test',0)
 cv.resizeWindow('test',400,800)
 
