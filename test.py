@@ -24,6 +24,9 @@ def load_image(image_path, x32=False):
         w, h = img.size
         img = img.resize((to_32s(w), to_32s(h)))
 
+    w, h = img.size
+    img = img.resize((1080, int(h * 1080 / w)))
+    print(img.size)
     return img
 
 

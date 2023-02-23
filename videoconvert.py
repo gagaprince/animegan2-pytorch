@@ -62,4 +62,8 @@ def cvt2anime_video(video, output):
 
 
 if __name__ == '__main__':
-    cvt2anime_video('./samples/video/3.mp4', './samples/temp/3.mp4')
+    cvt2anime_video('./smallvideo/videos/15.mp4', './smallvideo/videos_out/15.mp4')
+    cvt2anime_video('./smallvideo/videos/16.mp4', './smallvideo/videos_out/16.mp4')
+    cvt2anime_video('./smallvideo/videos/17.mp4', './smallvideo/videos_out/17.mp4')
+    cvt2anime_video('./smallvideo/videos/18.mp4', './smallvideo/videos_out/18.mp4')
+    cvt2anime_video('./smallvideo/videos/19.mp4', './smallvideo/videos_out/19.mp4')
