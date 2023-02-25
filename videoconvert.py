@@ -3,15 +3,15 @@ import torch
 import numpy as np
 from torchvision.transforms.functional import to_tensor, to_pil_image
 from model import Generator
-
-
-
+import os
 
 torch.backends.cudnn.enabled = True
 torch.backends.cudnn.benchmark = False
 torch.backends.cudnn.deterministic = True
 
 device = "cuda"
+
+
 def initNet():
     net = Generator()
     net.load_state_dict(torch.load('./weights/face_paint_512_v2.pt', map_location="cpu"))
@@ -30,8 +30,10 @@ def oneFrameCvt(image, net):
     torch.cuda.empty_cache()
     return out
 
-def cvt2anime_video(video, output):
-    net = initNet()
+
+def cvt2anime_video(video, output, net):
+    if not net:
+        net = initNet()
     vid = cv2.VideoCapture(video)
     total = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
     fps = vid.get(cv2.CAP_PROP_FPS)
@@ -47,10 +49,10 @@ def cvt2anime_video(video, output):
             break
         cv2.imshow("video", frame)
         img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        print(f"开始转换第{index+1}帧")
+        print(f"开始转换第{index + 1}帧")
         out = oneFrameCvt(img, net)
         print(f"第{index + 1}帧转换完成")
-        print(f"进度：{(index+1)/total*100}")
+        print(f"进度：{(index + 1) / total * 100}")
         cv2.imshow("video1", out)
         cv2.waitKey(1)
         video_out.write(out)
@@ -60,10 +62,19 @@ def cvt2anime_video(video, output):
     video_out.release()
 
 
+def cvt2anime_video_with_dir(input_dir, output):
+    files = os.listdir(input_dir)
+    net = initNet()
+    for videoName in files:
+        inputFile = os.path.join(input_dir, videoName)
+        outfile = os.path.join(output, videoName)
+        cvt2anime_video(inputFile, outfile, net)
+
 
 if __name__ == '__main__':
-    cvt2anime_video('./smallvideo/videos/15.mp4', './smallvideo/videos_out/15.mp4')
-    cvt2anime_video('./smallvideo/videos/16.mp4', './smallvideo/videos_out/16.mp4')
-    cvt2anime_video('./smallvideo/videos/17.mp4', './smallvideo/videos_out/17.mp4')
-    cvt2anime_video('./smallvideo/videos/18.mp4', './smallvideo/videos_out/18.mp4')
-    cvt2anime_video('./smallvideo/videos/19.mp4', './smallvideo/videos_out/19.mp4')
+    # cvt2anime_video('./smallvideo/videos/15.mp4', './smallvideo/videos_out/15.mp4')
+    # cvt2anime_video('./smallvideo/videos/16.mp4', './smallvideo/videos_out/16.mp4')
+    # cvt2anime_video('./smallvideo/videos/17.mp4', './smallvideo/videos_out/17.mp4')
+    # cvt2anime_video('./smallvideo/videos/18.mp4', './smallvideo/videos_out/18.mp4')
+    # cvt2anime_video('./smallvideo/videos/19.mp4', './smallvideo/videos_out/19.mp4')
+    cvt2anime_video_with_dir('./smallvideo/videos/', './smallvideo/videos_out/')
