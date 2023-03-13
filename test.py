@@ -41,7 +41,7 @@ def test(args):
     os.makedirs(args.output_dir, exist_ok=True)
 
     for image_name in sorted(os.listdir(args.input_dir)):
-        if os.path.splitext(image_name)[-1].lower() not in [".jpg", ".png", ".bmp", ".tiff"]:
+        if os.path.splitext(image_name)[-1].lower() not in [".jpg", ".jpeg", ".png", ".bmp", ".tiff"]:
             continue
             
         image = load_image(os.path.join(args.input_dir, image_name), args.x32)
@@ -63,17 +63,17 @@ if __name__ == '__main__':
     parser.add_argument(
         '--checkpoint',
         type=str,
-        default='./weights/paprika.pt',
+        default='./weights/face_paint_512_v2.pt',
     )
     parser.add_argument(
         '--input_dir', 
         type=str, 
-        default='./samples/inputs',
+        default='./smallvideo/photos',
     )
     parser.add_argument(
         '--output_dir', 
         type=str, 
-        default='./samples/results',
+        default='./smallvideo/photos_out',
     )
     parser.add_argument(
         '--device',
